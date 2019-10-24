@@ -9,5 +9,5 @@ def item(id):
 
 
 with app.test_request_context():
-    print url_for('item', id='1')
-    print url_for('item', id=2, next='/')
+    print url_for('item', id='1') # /item/1/?id=1
+    print url_for('item', id=2, next='/') # /item/1/?id=2&next=%2F

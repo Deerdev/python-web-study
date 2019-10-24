@@ -1,6 +1,7 @@
 # coding=utf-8
 from flask import Flask
 
+# 让flask.helpers.get_root_path函数通过传入这个名字确定程序的根目录
 app = Flask(__name__)
 
 

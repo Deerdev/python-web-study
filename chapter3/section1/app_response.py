@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 from werkzeug.wrappers import Response
 app = Flask(__name__)
 
-
+# 自定义json序列化
 class JSONResponse(Response):
     @classmethod
     def force_type(cls, rv, environ=None):
@@ -21,6 +21,7 @@ def hello_world():
 
 @app.route('/custom_headers')
 def headers():
+    # 返回json格式 header
     return {'headers': [1, 2, 3]}, 201, [('X-Request-Id', '100')]
 
 
