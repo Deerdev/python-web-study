@@ -17,3 +17,10 @@ def index():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
+
+# 在虚拟机上绑定一下域名，也就是在/etc/hosts添加一行：
+    # 127.0.0.1 a.example.com b.example.com
+# 现在验证它：
+    # 支持 subdomain 的访问
+    # ＞ http http://b.example.com:9000 --print b # b表示只输出响应的主体
+    # b

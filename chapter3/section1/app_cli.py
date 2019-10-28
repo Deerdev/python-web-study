@@ -13,6 +13,7 @@ except ImportError:
     has_ipython = False
 
 app = Flask(__name__)
+# 创建Flask自己的命令行
 
 
 @app.route('/')
@@ -20,6 +21,7 @@ def hello_world():
     return 'Hello World!'
 
 
+# 注册initdb命令：flask initdb
 @app.cli.command()
 def initdb():
     click.echo('Init the db')
@@ -33,6 +35,7 @@ def ipython_shell(user_ns, banner):
     IPython.embed(banner1=banner, user_ns=user_ns)
 
 
+# 注册new_shell命令：flask new_shell --plain
 @app.cli.command('new_shell', short_help='Runs a shell in the app context.')
 @click.option('--plain', help='Use Plain Shell', is_flag=True)
 @with_appcontext

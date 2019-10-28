@@ -8,6 +8,8 @@ from consts import DB_URI
 eng = create_engine(DB_URI)
 Base = declarative_base()
 
+# 可以通过sqlalchemy.text写复杂的条件语句来操作数据库
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -15,6 +17,7 @@ class User(Base):
     id = Column(Integer, Sequence('user_id_seq'),
                 primary_key=True, autoincrement=True)
     name = Column(String(50))
+
 
 Base.metadata.drop_all(bind=eng)
 Base.metadata.create_all(bind=eng)
@@ -32,6 +35,7 @@ def get_result(rs):
     print '-' * 20
     for user in rs:
         print user.name
+
 
 rs = session.query(User).filter(
     text('id > 2 and id < 4')).order_by(text('id')).all()

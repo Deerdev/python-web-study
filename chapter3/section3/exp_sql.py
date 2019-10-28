@@ -4,6 +4,8 @@ from sqlalchemy import (create_engine, Table, MetaData, Column, Integer,
 from sqlalchemy.sql import select, asc, and_
 from consts import DB_URI
 
+# SQLAlchemy支持使用表达式的方式来操作数据库
+
 eng = create_engine(DB_URI)
 
 meta = MetaData(eng)
@@ -24,6 +26,7 @@ def execute(s):
     for row in rs:
         print row['Id'], row['Name']
 
+
 with eng.connect() as con:
     for username in ('xiaoming', 'wanglang', 'lilei'):
         user = users.insert().values(Name=username)
@@ -40,6 +43,9 @@ with eng.connect() as con:
                                      users.c.Id < 4))
     execute(stm)
 
+    # stm 原始sql语句
+    # SELECT`Users`.`Id`,`Users`.`Name`
+    # FROM`Users`ORDER BY`Users`.`Name`ASC
     stm = select([users]).order_by(asc(users.c.Name))
     execute(stm)
 
