@@ -7,6 +7,8 @@ from config import UPLOAD_FOLDER
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
+# 获取文件md5
+
 
 def get_file_md5(f, chunk_size=8192):
     h = hashlib.md5()
@@ -16,6 +18,8 @@ def get_file_md5(f, chunk_size=8192):
             break
         h.update(chunk)
     return h.hexdigest()
+
+# 返回可读的文件大小
 
 
 def humanize_bytes(bytesize, precision=2):
@@ -35,4 +39,5 @@ def humanize_bytes(bytesize, precision=2):
     return '%.*f %s' % (precision, bytesize / factor, suffix)
 
 
+# 根据上传文件的目录获得文件路径
 get_file_path = partial(os.path.join, HERE, UPLOAD_FOLDER)

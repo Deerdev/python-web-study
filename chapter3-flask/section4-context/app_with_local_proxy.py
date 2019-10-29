@@ -10,6 +10,8 @@ app = Flask(__name__, template_folder='../../templates')
 app.config.from_object('config')
 db.init_app(app)
 
+# 使用LocalProxy替代g: g也是一个被LocalProxy包装的对象，而且还需要借助before_request这个钩子, 可以使用 LocalProxy 简化
+
 _user_stack = LocalStack()
 
 
@@ -20,6 +22,7 @@ def get_current_user():
     return top
 
 
+# 现在就可以去掉before_request，直接使用current_user了：
 current_user = LocalProxy(get_current_user)
 
 
