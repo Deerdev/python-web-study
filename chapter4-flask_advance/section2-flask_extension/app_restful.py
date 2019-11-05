@@ -3,6 +3,9 @@ from flask import Flask, request
 from flask_restful import Resource, Api, reqparse, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 
+# Flask-RESTful帮助你快速创建REST API服务。先安装它：
+# ＞ pip install flask-restful
+
 app = Flask(__name__)
 app.config.from_object('config')
 api = Api(app)
@@ -27,10 +30,12 @@ class User(db.Model):
     name = db.Column(db.String(128), nullable=False)
     address = db.Column(db.String(128), nullable=True)
 
+
 db.create_all()
 
 
 class UserResource(Resource):
+    # 在Flask-RESTful中，一个地址下的数据称为资源（Resource）。装饰器marshal_with做了把模型实例的属性组合成一个字典的抽象工作
     @marshal_with(resource_fields)
     def get(self, name):
         user = User.query.filter_by(name=name).first()

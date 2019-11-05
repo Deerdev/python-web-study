@@ -8,6 +8,9 @@ from wtforms.validators import length, Required, EqualTo
 from ext import db
 from users import User
 
+# Flask-WTF是一个集成WTForms的表单验证和渲染的扩展。我们先安装它；
+#     ＞ pipinstallFlask - WTF
+
 app = Flask(__name__, template_folder='../../templates')
 app.config.from_object('config')
 CsrfProtect(app)

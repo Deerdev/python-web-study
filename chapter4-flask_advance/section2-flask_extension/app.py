@@ -9,7 +9,7 @@ from models import PasteFile
 from utils import get_file_path, humanize_bytes
 
 ONE_MONTH = 60 * 60 * 24 * 30
-
+# 文件上传服务的copy
 app = Flask(__name__, template_folder='../../templates/r',
             static_folder='../../static')
 app.config.from_object('config')

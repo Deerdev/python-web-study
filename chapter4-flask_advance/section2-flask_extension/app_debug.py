@@ -1,7 +1,8 @@
 # coding=utf-8
 from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
-
+# 使用 flask_debugtoolbar (pip install flask-debugtoolbar)
+# 在浏览器上添加右边栏，可以快速查看环境变量、上下文内容，方便调试 （测试前端页面）
 app = Flask(__name__)
 
 app.debug = True

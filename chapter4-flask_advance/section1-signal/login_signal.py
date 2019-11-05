@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, url_for
 import flask_login
 from flask_sqlalchemy import SQLAlchemy
 
+# Flask-Login中的信号
 
 app = Flask(__name__)
 app.secret_key = 'super secret string'
@@ -16,6 +17,12 @@ login_manager.init_app(app)
 
 password = '123'
 
+# flask_login提供了UserMixin，有一些用户相关的属性。
+# is_authenticated：是否被验证。
+# is_active：是否被激活。
+# is_anonymous：是否是匿名用户。
+# get_id()：获得用户的id，并转换为Unicode类型
+
 
 class User(flask_login.UserMixin, db.Model):
     __tablename__ = 'login_users'
@@ -27,7 +34,7 @@ class User(flask_login.UserMixin, db.Model):
 
 db.create_all()
 
-
+# 添加user_logged_in信号后，一登录就会触发user_logged_in信号，增加登录次数，并添加最近登录IP
 @flask_login.user_logged_in.connect_via(app)
 def _track_logins(sender, user, **extra):
     user.login_count += 1
@@ -35,9 +42,10 @@ def _track_logins(sender, user, **extra):
     db.session.add(user)
     db.session.commit()
 
-
+# 使用user_loader装饰器的回调函数非常重要，它将决定user对象是否在登录状态
 @login_manager.user_loader
 def user_loader(id):
+    # 这个id参数的值是在flask_login.login_user(user)中传入的user的id属性
     user = User.query.filter_by(id=id).first()
     return user
 
