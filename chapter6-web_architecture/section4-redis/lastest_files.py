@@ -12,6 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 MAX_FILE_COUNT = 50
+# 通过redis缓存mysql数据的id，再去反查
 
 
 class PasteFile(db.Model):
@@ -24,6 +25,7 @@ class PasteFile(db.Model):
         self.uploadtime = datetime.now() if uploadtime is None else uploadtime
         self.name = name
 
+
 db.create_all()
 
 
@@ -34,16 +36,18 @@ def upload():
     pastefile = PasteFile(name)
     db.session.add(pastefile)
     db.session.commit()
+    # r.lpush表示对列表左侧放入新的数据库条目的id，r.ltrim用来修剪列表，只保留最近的50个结果
     r.lpush('latest.files', pastefile.id)
     r.ltrim('latest.files', 0, MAX_FILE_COUNT - 1)
 
     return jsonify({'r': 0})
 
-
+# 获取最近上传文件列表的视图
 @app.route('/lastest_files')
 def get_lastest_files():
     start = request.args.get('start', default=0, type=int)
     limit = request.args.get('limit', default=20, type=int)
+    # 先获得最近上传的文件id列表，再获得这些模型对象
     ids = r.lrange('latest.files', start, start + limit - 1)
     files = PasteFile.query.filter(PasteFile.id.in_(ids)).all()
     return json.dumps([{'id': f.id, 'filename': f.name} for f in files])

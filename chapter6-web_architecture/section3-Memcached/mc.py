@@ -3,7 +3,7 @@ from libmc import (
     Client, MC_HASH_MD5, MC_POLL_TIMEOUT, MC_CONNECT_TIMEOUT, MC_RETRY_TIMEOUT
 )
 from mc_decorator import create_decorators
-
+# libmc缓存客户端，Memcached 服务器
 mc = Client(
     [
         'localhost',

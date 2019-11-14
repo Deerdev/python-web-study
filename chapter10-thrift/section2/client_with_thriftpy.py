@@ -7,7 +7,7 @@ from thriftpy.protocol import TBinaryProtocolFactory
 from thriftpy.transport import TBufferedTransportFactory
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-
+# 使用 thriftpy（https://github.com/eleme/thriftpy）的例子
 calc_thrift = thriftpy.load(
     os.path.join(HERE, 'calc.thrift'),
     module_name='calc_thrift')

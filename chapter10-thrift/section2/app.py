@@ -10,7 +10,7 @@ from utils import get_file_path, humanize_bytes
 from client import create
 
 ONE_MONTH = 60 * 60 * 24 * 30
-
+# 服务化：app.py专注于视图逻辑；client.py专注于请求服务；server.py处理客户端发来的接口请求。
 app = Flask(__name__, template_folder='../../templates/r',
             static_folder='../../static')
 app.config.from_object('config')
@@ -54,6 +54,7 @@ def index():
         if not uploaded_file:
             return abort(400)
 
+        # 使用Thrift客户端代码请求服务端之后获得创建的文件对象
         rs = create(uploaded_file, width=w, height=h)
         if rs['r']:
             return rs['error']
@@ -61,7 +62,7 @@ def index():
         paste_file = rs['paste_file']
 
         return jsonify({
-            'url_d': paste_file.url_d % request.host,
+            'url_d': paste_file.url_d % request.host,   # 由于之前get_url的值中的主机名使用了%s占位，这里填充进去
             'url_i': paste_file.url_i % request.host,
             'url_s': paste_file.url_s % request.host,
             'url_p': paste_file.url_p % request.host,
@@ -69,6 +70,7 @@ def index():
             'size': humanize_bytes(paste_file.size),
             'uploadtime': paste_file.uploadtime,
             'type': paste_file.type,
+            # quoteurl已经是url编码后的结果，需要使用替换的方式
             'quoteurl': paste_file.quoteurl.replace('%25s', request.host)
         })
 

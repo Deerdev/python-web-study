@@ -14,14 +14,16 @@ from mongoengine import (
     Document as BaseDocument, connect, ValidationError, DoesNotExist,
     QuerySet, MultipleObjectsReturned, IntField, DateTimeField, StringField,
     SequenceField)
-
+# 使用 mongoengine 作为 mongoDB 的 ORM
 from mimes import IMAGE_MIMES, AUDIO_MIMES, VIDEO_MIMES
 from utils import get_file_md5, get_file_path
 
+# 连接本机27017端口的MongoDB服务器的数据库r
 connect('r', host='localhost', port=27017)
 
 
 class BaseQuerySet(QuerySet):
+    # 当捕捉到多个值/不存在或者验证失败这三种异常时，直接返回404，这个方法很常用
     def get_or_404(self, *args, **kwargs):
         try:
             return self.get(*args, **kwargs)
@@ -31,10 +33,11 @@ class BaseQuerySet(QuerySet):
 
 class Document(BaseDocument):
     meta = {'abstract': True,
-            'queryset_class': BaseQuerySet}
+            'queryset_class': BaseQuerySet}  # 使用自定义的BaseQuerySet
 
 
 class PasteFile(Document):
+    # MongoDB默认使用是_id这个字段作为主键，但是它是bson.ObjectId的实例，不方便short_url模块获得短链接，而使用SequenceField替换它，就可以达到id自增长的目的了
     id = SequenceField(primary_key=True)
     filename = StringField(max_length=5000, null=False)
     filehash = StringField(max_length=128, null=False, unique=True)

@@ -41,6 +41,7 @@ exception ServiceUnavailable {
 }
 
 service PasteFileService {
+    // throws块内列出了可能抛出的异常
     PasteFile get(1:i32 pid)
         throws(
             1: ServiceUnavailable service_error,

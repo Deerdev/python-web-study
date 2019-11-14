@@ -4,6 +4,7 @@ import time
 import inspect
 from functools import wraps
 
+# 徒手写缓存机制
 MC_DEFAULT_EXPIRE_IN = 0  # 不过期
 __formaters = {}
 percent_pattern = re.compile(r'%\w')

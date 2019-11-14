@@ -7,8 +7,10 @@ from thriftpy.rpc import make_server
 from thriftpy.protocol import TBinaryProtocolFactory
 from thriftpy.transport import TBufferedTransportFactory
 
+# 使用 thriftpy（https://github.com/eleme/thriftpy）的例子
+
 HERE = os.path.abspath(os.path.dirname(__file__))
-logging.basicConfig()
+logging.basicConfig()   # 这一步很重要，可以收到Thrift发出来的异常日志
 
 calc_thrift = thriftpy.load(
     os.path.join(HERE, 'calc.thrift'),

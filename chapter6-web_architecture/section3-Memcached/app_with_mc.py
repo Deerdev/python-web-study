@@ -3,6 +3,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api, fields, marshal_with
 from sqlalchemy import create_engine
 from mc import mc, cache
+# 使用 libmc
 
 app = Flask(__name__)
 DATABASE_URI = 'mysql://web:web@localhost:3306/r'

@@ -3,6 +3,10 @@ import random
 from datetime import datetime, timedelta
 
 import pymongo
+# 组合大文档
+# 每分钟记一次log
+# 改成每小时记一次（节省时间和空间）
+
 
 RANGE = 1440
 l = [random.randint(1, 100) for i in range(RANGE)]  # 模拟一天的数据
